@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaftlet Web Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map{
+            position: absolute; top: 0;bottom: 0;left: 0;right: 0;
+            width: 100%;
+            height: 400px;
+        }
+        .leaflet-control-attribution a:first-child{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+        <div id="map"></div>
+<script>
+    var map=L.map('map').setView([51.5,-3.4],9);
+    
+    var baseLayer= L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+     
+     }).addTo(map);
+     var myGeoJson={
+         "type":"FeatureCollection",
+         "features":[
+           {"type" :"Feature",
+           "geometry":{"type":"Point","coordinates":[-3.934,51.642]},
+           "properties":{"name":"Principality Stadium"}
+            },
+            {"type" :"Feature",
+           "geometry":{"type":"Point","coordinates":[-3.182,51.478]},
+           "properties":{"name":"Liberty Stadium"}
+            } 
+           ]
+     }
+    var marker= L.marker([51.5, -0.09]).addTo(map)
+    
+    var circle=L.circle([51.508,-0.11],{
+        color:'red',
+        filterColor:"#f03",
+        fillOpacity:0.5,
+        redius:500,
+    }).addTo(map);
+    var contentLayer=  L.geoJSON(myGeoJson).addTo(map);
+    L.polygon([
+       [-3.934,51.642],
+       [-3.182,51.478],
+       
+    ]).addTo(map).bindPopup("I am a polygon.");   
+    marker.bindPopup("<b>Hey There</b> <br/> My Map Marker");
+</script>
+</body>
+</html>

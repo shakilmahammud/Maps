@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Open Layers Map</title>
+<link rel="stylesheet" href="./v4.6.5-dist/ol.css">
+</head>
+<style>
+    #openLayerMap{
+        width: 100%;
+        height: 600px;
+    }
+</style>
+<body>
+<h2>Open Layer Map</h2>
+<div id="openLayerMap"></div>
+
+<script src="./v4.6.5-dist/ol.js"></script>
+
+<script>
+var birmingham = [-1.81185, 52.44314]
+map1 = new ol.Map({
+
+view: new ol.View({
+
+    center: ol.proj.transform(birmingham,'EPSG:3857','EPSG:4326'),
+
+zoom: 4
+
+}),
+
+layers: [
+
+new ol.layer.Tile({
+
+source: new ol.source.OSM()
+
+})
+
+],
+
+target: 'openLayerMap'
+
+})
+var geoJSONLayer = new ol.layer.Vector
+
+({
+
+source: new ol.source.Vector
+
+({
+
+format: new ol.format.GeoJSON(),
+
+url: 'https://openlayers.org/en/v4.6.5/examples/data/geojson/countries.geojson'
+
+})
+
+});
+
+map1.addLayer(geoJSONLayer);
+var wmsLayer = new ol.layer.Image({
+
+source: new ol.source.ImageWMS({
+
+url: 'https://ahocevar.com/geoserver/wms',
+
+params: {
+
+'LAYERS': 'topp:states'
+
+},
+
+}),
+zIndex:11,
+opacity: 0.5
+})
+map1.addLayer(wmsLayer);
+var Layer1 = new ol.layer.Tile({
+
+source: new ol.source.OSM({
+
+url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
+
+})
+
+})
+
+map1.addLayer(Layer1);
+var Layer2 = new ol.layer.Image({
+
+source: new ol.source.ImageWMS({
+
+url: 'https://ahocevar.com/geoserver/wms',
+
+params: {
+
+"LAYERS": 'tasmania'
+
+},
+
+projection: 'EPSG: 4326'
+
+})
+
+});
+
+map1.addLayer(Layer2);
+proj4.defs('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 ' +
+
+'+x_0=400000 +y_0=-100000 +ellps=airy ' +
+
+'+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 ' +
+
+'+units=m +no_defs');
+
+var imageExtent = [0, 0, 700000, 1300000];
+
+var Layer3 = new ol.layer.Image({
+
+source: new ol.source.ImageStatic({
+
+url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/British_National_Grid.svg/2000px-British_National_Grid.svg.png',
+
+projection: 'EPSG:27700',
+
+imageExtent: imageExtent
+
+})
+
+})
+
+map1.addLayer(Layer3);
+
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
+</body>
+
+</html>
